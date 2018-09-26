@@ -82,7 +82,7 @@ class PageGenerator:
 			'''
 		
 		# Fourth header part (pre-generated)
-		header = header + self.FixedHeader[1] + self.GenerateBanner(page) + '<div class="{0}-page">'.format(page.Name.lower()) + self.FixedHeader[2]
+		header = header + self.FixedHeader[1] + self.GenerateBanner(page) + '<div class="page-{0}">'.format(page.Name.lower()) + self.FixedHeader[2]
 
 		return header
 
