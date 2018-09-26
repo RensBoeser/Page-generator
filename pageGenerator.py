@@ -25,6 +25,8 @@ class PageGenerator:
 		self.FixedFooter = '''
 <div id="footer"></div>
 <script src="http://2018.igem.org/Template:Rotterdam_HR/js/main?action=raw&ctype=text/javascript"></script>
+
+</div>
 </body>
 </html>
 '''
@@ -80,14 +82,14 @@ class PageGenerator:
 			'''
 		
 		# Fourth header part (pre-generated)
-		header = header + self.FixedHeader[1] + self.GenerateBanner(page) + self.FixedHeader[2]
+		header = header + self.FixedHeader[1] + self.GenerateBanner(page) + '<div class="{0}-page">'.format(page.Name.lower()) + self.FixedHeader[2]
 
 		return header
-	
+
 	def GenerateBanner(self, page):
 		# Dedicated banner backgrounds for specific pages 
 		pageBanners = {
-			'index'          : "http://2018.igem.org/wiki/images/e/ef/T--Rotterdam_HR--team-heads.jpg",
+			'index'          : "http://2018.igem.org/wiki/images/c/c1/T--Rotterdam_HR--graffiti.jpeg",
 			'team'           : "http://2018.igem.org/wiki/images/e/ef/T--Rotterdam_HR--team-heads.jpg",
 			'human_practices': "http://2018.igem.org/wiki/images/3/3a/T--Rotterdam_HR--Human_practices-banner.jpeg",
 			'software'       : "http://2018.igem.org/wiki/images/c/cc/T--Rotterdam_HR--Software-banner.jpeg",
@@ -96,27 +98,47 @@ class PageGenerator:
 			'experiments'    : "http://2018.igem.org/wiki/images/a/a3/T--Rotterdam_HR--Experiments-banner.jpeg",
 			'hardware'       : "http://2018.igem.org/wiki/images/1/11/T--Rotterdam_HR--Hardware-banner.jpeg"
 		}
+		pageBannersSmall = {
+			'index'          : "http://2018.igem.org/wiki/images/0/0c/T--Rotterdam_HR--Graffiti-banner_small.jpeg",
+			'team'           : "http://2018.igem.org/wiki/images/6/62/T--Rotterdam_HR--team_small.jpeg",
+			'human_practices': "http://2018.igem.org/wiki/images/1/1c/T--Rotterdam_HR--Human_practices-banner_small.jpeg",
+			'software'       : "http://2018.igem.org/wiki/images/c/cd/T--Rotterdam_HR--Software-banner_small.jpeg",
+			'safety'         : "http://2018.igem.org/wiki/images/0/04/T--Rotterdam_HR--Safety-banner_small.jpeg",
+			'notebook'       : "http://2018.igem.org/wiki/images/7/77/T--Rotterdam_HR--Notebook-banner_small.jpeg",
+			'experiments'    : "http://2018.igem.org/wiki/images/0/00/T--Rotterdam_HR--Experiments-banner_small.jpeg",
+			'hardware'       : "http://2018.igem.org/wiki/images/3/36/T--Rotterdam_HR--Hardware-banner_small.jpeg"
+		}
 
 		# Get the dedicated banner. If it cannot find any, set it to the default homepage banner.
 		banner = pageBanners.get(page.Name.lower())
 		if banner == None: banner = pageBanners.get('index')
+		
+		bannerSmall = pageBannersSmall.get(page.Name.lower())
+		if bannerSmall == None: bannerSmall = pageBannersSmall.get('index')
 
 		return '''
 <style>
 	.header::before {{
-		background: black url({0}) no-repeat left;
+		background: black url("{0}") no-repeat left;
   	background-size: 100%;
+	}}
+
+	@media screen and (max-width: 720px) {{
+		.header::before {{
+			background: black url("{1}") no-repeat left;
+			background-size: 100% 100%;
+		}}
 	}}
 </style>
 
 <div class="header">
   <div>
 		<div id="icon"></div>
-		<script> $('#icon').load("{2}?action=raw&ctype=text/html"); </script>
-    <h1 style="background: none;">{1}</h1>
+		<script> $('#icon').load("{3}?action=raw&ctype=text/html"); </script>
+    <h1 style="background: none;">{2}</h1>
   </div>
 </div>
-'''.format(banner, 'Home' if page.Name.replace('_', ' ').title() == 'Index' else page.Name.replace('_', ' ').title(), page.Icon)
+'''.format(banner, bannerSmall, 'Home' if page.Name.replace('_', ' ').title() == 'Index' else page.Name.replace('_', ' ').title(), page.Icon)
 	
 	def GetPageContent(self, page):
 		if page.HasContent:
