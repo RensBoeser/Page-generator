@@ -120,13 +120,13 @@ class PageGenerator:
 <style>
 	.header::before {{
 		background: black url("{0}") no-repeat left;
-  	background-size: 100%;
+  	background-size: cover;
 	}}
 
 	@media screen and (max-width: 720px) {{
 		.header::before {{
 			background: black url("{1}") no-repeat left;
-			background-size: 100% 100%;
+			background-size: cover;
 		}}
 	}}
 </style>
